@@ -1,6 +1,5 @@
-import Sequelize from 'sequelize';
-import db from './index';
-const User = db.model('user');
+const Sequelize = require('sequelize');
+const db = require('./_db');
 
 var Hash = db.define('hash', {
   tag: {
@@ -9,3 +8,5 @@ var Hash = db.define('hash', {
       unique: true
   }
 })
+
+module.exports = Hash;

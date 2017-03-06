@@ -3,9 +3,9 @@ const axios = require('axios');
 const passport = require('passport');
 
 const db = require('../../db');
-const User = require('../users/user.model');
+const User = db.user;
 
-
+console.log('im in');
 router.post('/login', (req, res, next) => {
   console.log('GOT TO LOGIN ROUTE');
   console.log('REQ BODY:', req.body);
@@ -14,6 +14,7 @@ router.post('/login', (req, res, next) => {
   })
   .then( (foundUser) => {
     //persist their session
+    console.log(foundUser);
     if (foundUser) {
       req.session.userId = foundUser.id;
       // res.redirect(`/users/${foundUser.id}`);
@@ -31,7 +32,7 @@ router.get('/logout', (req, res, next) => {
   res.redirect('/');
 });
 
-router.get('/api/auth/me', (req, res, next) => {
+router.get('/auth/me', (req, res, next) => {
   let userId = req.session.userId;
   console.log('FOUND USERID', userId);
   if (userId){

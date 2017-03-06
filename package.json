@@ -1,8 +1,8 @@
 {
   "name": "ageusic-gourmet",
   "version": "1.0.0",
-  "description": "Food Blog",
-  "main": "server/routes/index.js",
+  "description": "Food-Blog",
+  "main": "server/app/index.js",
   "scripts": {
     "start": "webpack -w & nodemon --watch server -e js,html server/routes/index.js",
     "seed": "node seed"

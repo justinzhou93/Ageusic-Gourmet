@@ -1,7 +1,7 @@
-import Sequelize from 'sequelize';
-import db from './index';
-const User = db.user;
-const Hash = db.hash;
+const Sequelize = require('sequelize');
+const db = require('./_db');
+const User = require('./user');
+const Hash = require('./hash');
 var marked = require('marked');
 
 var Article = db.define('article', {
@@ -17,22 +17,22 @@ var Article = db.define('article', {
         type: Sequelize.TEXT,
         allowNull: false
     },
-    status: {
-        type: Sequelize.ENUM('open', 'closed')
+    numArticleTags: {
+        type: Sequelize.INTEGER
     },
     tags: {
-        type: Sequelize.ARRAY(Sequelize.TEXT),
-        set: function (value) {
-            var arrayOfTags;
-            if (typeof value === 'string') {
-                arrayOfTags = value.split(',').map(function (s) {
-                    return s.trim();
-                });
-                this.setDataValue('tags', arrayOfTags);
-            } else {
-                this.setDataValue('tags', value);
-            }
-        }
+        type: Sequelize.ARRAY(Sequelize.INTEGER)
+        // set: function (value) {
+        //     var arrayOfTags;
+        //     if (typeof value === 'string') {
+        //         arrayOfTags = value.split(',').map(function (s) {
+        //             return s.trim();
+        //         });
+        //         this.setDataValue('tags', arrayOfTags);
+        //     } else {
+        //         this.setDataValue('tags', value);
+        //     }
+        // }
     }
 }, {
     hooks: {
@@ -40,6 +40,7 @@ var Article = db.define('article', {
             if (article.title) {
                 article.urlTitle = article.title.replace(/\s+/g, '_').replace(/\W/g, '');
             }
+            article.numArticleTags = article.tags.reduce((tot, tag) => tot + tag, 0);
         }
     },
     getterMethods: {
@@ -96,3 +97,5 @@ var Article = db.define('article', {
         }
     }
 });
+
+module.exports = Article;
